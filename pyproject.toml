@@ -1,0 +1,11 @@
+[project]
+name = "autosurvey-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "konlpy>=0.6.0",
+    "openai>=2.1.0",
+    "scikit-learn>=1.7.2",
+]

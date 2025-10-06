@@ -22,8 +22,6 @@ class SurveyEmbedder:
         # === 저장 경로 설정 ===
         self.db_path = Path(db_path)
         self.bm_path = Path(bm_path)
-        self.db_path.mkdir(parents=True, exist_ok=True)
-        self.bm_path.mkdir(parents=True, exist_ok=True)
 
     # ============================================================
     # FAISS 벡터DB 구축 및 저장

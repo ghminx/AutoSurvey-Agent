@@ -1,6 +1,9 @@
+from pathlib import Path
+import win32com.client as win32
+import re 
 import os
 import shutil
-from pathlib import Path
+
 
 # -----------------------
 # 설문지 리스트 출력 및 복사
@@ -24,13 +27,13 @@ for dirpath, _, filenames in os.walk(root_folder):
         shutil.copy2(src, dst)  # 메타데이터 포함 복사
         print(f"복사 완료: {src} → {dst}")
 
-print("✅ 모든 파일 복사 완료!")
+print("모든 파일 복사 완료!")
 
 
-import win32com.client as win32
-import re 
+# -----------------------
+# HWP TO PDF 
+# -----------------------
 
-# hwp2pdf
 def hwp2pdf(folder_path, sav_path):
     
     # 한글 기본 설정 
@@ -70,17 +73,16 @@ pdf_folder = root_folder / "PDF"
 
 hwp2pdf(sav_folder, pdf_folder)
 
-
-import os
-import shutil
-from pathlib import Path
+# -----------------------
+# PDF 파일 도메인별 폴더화
+# -----------------------
 
 base_dir = Path(r"C:\Users\rmsgh\Desktop\WIP\AutoSurvey-Agent\data\설문지")
 
 hwp_root = base_dir / "HWP"
 pdf_root = base_dir / "PDF"
 
-# === 1️⃣ HWP 파일 경로 매핑 (파일명 → 도메인)
+# === HWP 파일 경로 매핑 (파일명 → 도메인)
 hwp_map = {}
 
 for domain_folder in hwp_root.iterdir():
@@ -89,9 +91,9 @@ for domain_folder in hwp_root.iterdir():
             name_key = hwp_file.stem.strip()  # 확장자 제외 이름
             hwp_map[name_key] = domain_folder.name
 
-print(f"✅ HWP 파일 매핑 완료 ({len(hwp_map)}건)")
+print(f"HWP 파일 매핑 완료 ({len(hwp_map)}건)")
 
-# === 2️⃣ PDF 파일 완전 일치 기반 이동
+# === PDF 파일 완전 일치 기반 이동
 for pdf_file in pdf_root.glob("*.pdf"):
     pdf_key = pdf_file.stem.strip()
     
@@ -102,8 +104,8 @@ for pdf_file in pdf_root.glob("*.pdf"):
         dest_path = dest_folder / pdf_file.name
         
         shutil.move(str(pdf_file), dest_path)
-        print(f"📦 이동 완료 → [{domain}] {pdf_file.name}")
+        print(f"이동 완료 → [{domain}] {pdf_file.name}")
     else:
-        print(f"⚠️ 일치 없음 → {pdf_file.name}")
+        print(f"일치 없음 → {pdf_file.name}")
 
-print("\n🎉 모든 PDF 분류 완료!")
+print("\n모든 PDF 분류 완료!")

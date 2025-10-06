@@ -71,7 +71,7 @@ class LLMExtractor:
         # 모델 출력 파싱
         output_text = response.output_text.strip()
 
-        # JSON 파싱 안전 처리
+        # JSON 파싱 처리
         try:
             structured_data = json.loads(output_text)
         except json.JSONDecodeError:

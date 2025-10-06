@@ -74,8 +74,8 @@ if __name__ == "__main__":
     # 키워드 추출
     keywords = processor.extract_keywords(text, './user_input/stopword.txt')
 
-    print("📘 입력 문장:", text)
-    print("🔍 추출된 키워드:", keywords)
+    print("입력 문장:", text)
+    print("추출된 키워드:", keywords)
 
 
 

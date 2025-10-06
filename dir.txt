@@ -1,0 +1,31 @@
+auto-survey-agent/
+├── app/
+│   ├── main.py                          # FastAPI 엔트리포인트
+│   ├── orchestrator/
+│   │   └── agent.py                     # 전체 에이전트 제어 (LangChain)
+│   ├── modules/
+│   │   ├── user_input/                  # ① 사용자 입력 분석 모듈
+│   │   │   ├── analyzer.py
+│   │   │   └── schema.py
+│   │   ├── rag_retriever/               # ② RAG 기반 설문 검색 모듈
+│   │   │   ├── retriever.py
+│   │   │   ├── embedding.py
+│   │   │   └── vector_store.py
+│   │   ├── domain_llm/                  # ③ 도메인 특화 LLM 모듈
+│   │   │   ├── model_selector.py
+│   │   │   └── llm_runner.py
+│   │   ├── feedback/                    # ④ 피드백 및 출력 모듈
+│   │   │   ├── feedback_loop.py
+│   │   │   └── validator.py
+│   │   └── utils/                       # 공통 도우미
+│   │       ├── logger.py
+│   │       └── config.py
+│   └── routers/
+│       └── api_router.py                # FastAPI 라우터 관리
+│
+├── data/
+│   ├── vector_index/
+│   ├── raw_surveys/
+│   └── examples/
+│
+└── requirements.txt

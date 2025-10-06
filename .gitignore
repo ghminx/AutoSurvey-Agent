@@ -1,0 +1,67 @@
+# ===============================
+# 기본 Python 설정
+# ===============================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# 가상환경
+.env
+.venv
+env/
+venv/
+ENV/
+
+# 패키지 설치 캐시
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+
+# 로그 및 임시 파일
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Jupyter Notebook 체크포인트
+.ipynb_checkpoints/
+
+# VSCode, PyCharm 등의 IDE 설정
+.vscode/
+.idea/
+
+# ===============================
+# 프로젝트 특화 예외
+# ===============================
+data/
+
+# 한글(HWP) 파일 원본은 커밋하지 않음
+*.hwp
+
+# ===============================
+# OS 관련
+# ===============================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ===============================
+# 백업/임시 스크립트
+# ===============================
+*.bak
+*.old
+*_backup.py
+
+# 테스트 코드
+tt.py

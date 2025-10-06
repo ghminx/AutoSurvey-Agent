@@ -1,0 +1,19 @@
+[project]
+name = "autosurvey-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "faiss-cpu>=1.12.0",
+    "konlpy>=0.6.0",
+    "langchain>=0.3.27",
+    "langchain-community>=0.3.30",
+    "langchain-openai>=0.3.34",
+    "openai>=2.1.0",
+    "pandas>=2.3.3",
+    "pymupdf>=1.26.4",
+    "pywin32>=311",
+    "rank-bm25>=0.2.2",
+    "scikit-learn>=1.7.2",
+]

@@ -27,7 +27,7 @@ class DomainClassifier:
         ex2) 교육
         """)
 
-    def classify(self, user_input: dict, context: str) -> str:
+    def __call__(self, user_input: dict, context: str) -> str:
         formatted_input = self.prompt.format(
             user_input=str(user_input),
             context=context[:1000]  # 너무 길면 LLM이 산만해지므로 앞부분만
@@ -124,5 +124,5 @@ Q10. 조직문화 개선을 위한 건의사항이 있다면 자유롭게 기술
 
 if __name__ == "__main__":
     domain_classifier = DomainClassifier()
-    selected_domain = domain_classifier.classify(user_input, context)
+    selected_domain = domain_classifier(user_input, context)
     print(selected_domain)

@@ -10,7 +10,7 @@ class UserInputAnalyzer:
         self.text_mining = TextMiningProcessor()
         self.llm_extractor = LLMExtractor(model=model)
 
-    def analyze(self, text: str) -> dict:
+    def __call__(self, text: str) -> dict:
         """사용자 입력 텍스트를 구조화된 정보로 변환"""
         
         # 키워드 추출
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     analyzer = UserInputAnalyzer(stopword_path="./user_input/stopword.txt", model="gpt-5")
     text = "병원의 조직문화 개선을 위한 설문을 하려고합니다 대상은 병원에 근무하는 의료진 및 직원들 입니다. 10문항으로 설문지를 구성해주세요"
     
-    result = analyzer.analyze(text)
+    result = analyzer(text)
 
     print("분석 결과:")
     print(result)

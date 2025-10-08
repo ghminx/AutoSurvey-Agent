@@ -72,7 +72,7 @@ user_input = build_rag_query(user_input)
 rag = SurveyRAG(model_name=Config.MODEL_NAME, sparse_weight=rag_params['sparse_weight'], dense_weight=rag_params['sparse_weight'], k=rag_params['k'])
 # query = "학생 교육 실태 조사와 관련된 설문지"
 
-context = rag.run(user_input)
+context = rag(user_input)
 
 print("\n RAG 응답 결과:\n")
 # print(context)
@@ -160,7 +160,7 @@ Q10. 조직문화 개선을 위한 건의사항이 있다면 자유롭게 기술
 from system_orchestration.domain_classifier import DomainClassifier
 
 domain_classifier = DomainClassifier()
-selected_domain = domain_classifier.classify(user_input, context)
+selected_domain = domain_classifier(user_input, context)
 
 DOMAIN_MODEL_MAP = {
     "공공·사회": "AutoSurvey-Public",
@@ -179,7 +179,7 @@ from domain_model.survey_generator import SurveyGenerator
 
 # generator = SurveyGenerator(model_name=selected_domain)
 generator = SurveyGenerator(model_name='gpt-5')
-result = generator.generate(user_input, context)
+result = generator(user_input, context)
 
 print("\n🧩 생성된 설문지 초안:\n")
 print(result)

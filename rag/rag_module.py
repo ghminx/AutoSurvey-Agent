@@ -70,7 +70,7 @@ class SurveyRAG:
             )
         return "\n---\n".join(formatted)
 
-    def run(self, query: str) -> str:
+    def __call__(self, query: str) -> str:
         """RAG 파이프라인 실행"""
         chain = (
             {"context": self.retriever | self.format_docs, "question": RunnablePassthrough()}
@@ -80,16 +80,6 @@ class SurveyRAG:
         )
         return chain.invoke(query)
 
-#    def __call__(self, query: str) -> str:
-#         """Tool 호출 시 실행"""
-#         chain = (
-#             {"context": self.retriever | self.format_docs, "question": RunnablePassthrough()}
-#             | self.prompt
-#             | self.model
-#             | StrOutputParser()
-#         )
-#         return chain.invoke(query)
-    
 
 if __name__ == "__main__":
     rag = SurveyRAG(model_name=Config.MODEL_NAME)
@@ -103,7 +93,7 @@ if __name__ == "__main__":
     '설문요구사항': '온라인 강의 맥락을 반영하고, 교수자 피드백 관련 문항을 포함할 것'
     }
     
-    answer = rag.run(query)
+    answer = rag(query)
 
     print("\n RAG 응답 결과:\n")
     print(answer)

@@ -15,11 +15,12 @@ MODEL_NAME = Config().EMBEDDING_MODEL
 FAISS_DB = Config().FAISS_DB
 BM_DB = Config().BM_DB
 
-# === 문서 로드 ===
-loader = SurveyLoader(PDF_ROOT)
-docs = loader.load_all()
+if __name__ == "__main__":
+    # === 문서 로드 ===
+    loader = SurveyLoader(PDF_ROOT)
+    docs = loader.load_all()
 
-# === 임베딩 및 BM25 구축 ===
-embedder = SurveyEmbedder(MODEL_NAME, FAISS_DB, BM_DB)
-embedder.build_vector_db(docs)      # FAISS 저장
-embedder.build_bm25_index(docs)     # BM25 저장
+    # === 임베딩 및 BM25 구축 ===
+    embedder = SurveyEmbedder(MODEL_NAME, FAISS_DB, BM_DB)
+    embedder.build_vector_db(docs)      # FAISS 저장
+    embedder.build_bm25_index(docs)     # BM25 저장

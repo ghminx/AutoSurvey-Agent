@@ -8,13 +8,13 @@ from rag.config import Config
 
 
 
-class RAGEngine:
+class SurveyRAG:
     """RAG 기반 설문 검색 및 응답 생성 엔진"""
 
     def __init__(self, model_name, sparse_weight=0.3, dense_weight=0.7, k=3):
         
         
-        self.model = ChatOpenAI(model_name = model_name)
+        self.model = ChatOpenAI(model = model_name)
         
         self.retriever = SurveyRetriever(sparse_weight=sparse_weight, dense_weight=dense_weight, k=k).get_retriever()
 
@@ -30,7 +30,7 @@ class RAGEngine:
         너의 임무는 다음과 같다:
         1. 원문 설문 문항이 있으면 가능한 그대로 출력한다(문항이 너무 많다면 자체적으로 판단해서 중복 문항을 제외하고 중요 문항만 보기와 함께 출력).
         2. 사용자의 질문과 가장 관련된 설문지를 선택해 요약하되, 문항 일부만이 아니라 전체 구조를 이해할 수 있도록 개요를 함께 제공해야함.  
-        3. 관련 문서가 없으면 "관련 설문을 찾을 수 없습니다."라고 답한다.
+        3. 관련 문서가 없으면 "관련 설문지가 없습니다."라고 답한다.
 
         출력 형식 예시:
 
@@ -79,11 +79,30 @@ class RAGEngine:
             | StrOutputParser()
         )
         return chain.invoke(query)
+
+#    def __call__(self, query: str) -> str:
+#         """Tool 호출 시 실행"""
+#         chain = (
+#             {"context": self.retriever | self.format_docs, "question": RunnablePassthrough()}
+#             | self.prompt
+#             | self.model
+#             | StrOutputParser()
+#         )
+#         return chain.invoke(query)
     
 
 if __name__ == "__main__":
-    rag = RAGEngine(model_name=Config.MODEL_NAME)
-    query = "학생 교육 실태 조사와 관련된 설문지"
+    rag = SurveyRAG(model_name=Config.MODEL_NAME)
+    # query = "학생 교육 실태 조사와 관련된 설문지"
+    
+    query = {
+    '조사목적': '대학생을 대상으로 온라인 강의 만족도를 조사하고, 강의 질 및 교수 피드백을 평가하기 위함',
+    '조사대상': '대학생',
+    '주요측정변수': ['온라인 강의 전반 만족도', '강의 질', '교수 피드백 만족도'],
+    '요청문항수': '10문항',
+    '설문요구사항': '온라인 강의 맥락을 반영하고, 교수자 피드백 관련 문항을 포함할 것'
+    }
+    
     answer = rag.run(query)
 
     print("\n RAG 응답 결과:\n")

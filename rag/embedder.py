@@ -23,9 +23,7 @@ class SurveyEmbedder:
         self.db_path = Path(db_path)
         self.bm_path = Path(bm_path)
 
-    # ============================================================
-    # FAISS 벡터DB 구축 및 저장
-    # ============================================================
+    # === FAISS 벡터DB 구축 및 저장 ===
     def build_vector_db(self, docs: List[Document]):
         if not docs:
             raise ValueError("문서 리스트(docs)가 비어 있습니다.")
@@ -53,9 +51,7 @@ class SurveyEmbedder:
         )
         return vector_store
 
-    # ============================================================
-    # BM25 인덱스 구축 및 저장
-    # ============================================================
+    # === BM25 인덱스 구축 및 저장===
     def build_bm25_index(self, docs: List[Document], k: int = 3):
         print(f"\n BM25 인덱스 생성 중... ({len(docs)}개 문서)")
         bm25_retriever = BM25Retriever.from_documents(docs)

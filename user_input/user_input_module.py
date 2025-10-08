@@ -27,7 +27,7 @@ class UserInputAnalyzer:
 
 if __name__ == "__main__":
     analyzer = UserInputAnalyzer(stopword_path="./user_input/stopword.txt", model="gpt-5")
-    text = "대학생을 대상으로 온라인 강의 만족도를 조사하고자 합니다. 강의 질과 교수자의 피드백에 대해 평가합니다."
+    text = "병원의 조직문화 개선을 위한 설문을 하려고합니다 대상은 병원에 근무하는 의료진 및 직원들 입니다. 10문항으로 설문지를 구성해주세요"
     
     result = analyzer.analyze(text)
 

@@ -9,6 +9,7 @@ dependencies = [
     "konlpy>=0.6.0",
     "langchain>=0.3.27",
     "langchain-community>=0.3.30",
+    "langchain-ollama>=0.3.10",
     "langchain-openai>=0.3.34",
     "openai>=2.1.0",
     "pandas>=2.3.3",

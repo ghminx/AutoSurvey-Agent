@@ -5,7 +5,7 @@ from user_input.llm_extractor import LLMExtractor
 class UserInputAnalyzer:
     """사용자 입력 분석 전체 프로세스 (Text Mining + LLM 추출)"""
     
-    def __init__(self, stopword_path: str, model: str = "gpt-5"):
+    def __init__(self, stopword_path: str, model: str = "gpt-5-mini"):
         self.stopword_path = stopword_path
         self.text_mining = TextMiningProcessor()
         self.llm_extractor = LLMExtractor(model=model)

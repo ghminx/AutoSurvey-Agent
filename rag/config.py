@@ -7,4 +7,4 @@ class Config:
     FAISS_DB: Path = Path("./rag/vector_store/faiss").resolve()
     BM_DB: Path = Path("./rag/vector_store/bm").resolve()
     EMBEDDING_MODEL: str = "text-embedding-3-small" 
-    MODEL_NAME: str = "gpt-5"
+    MODEL_NAME: str = "gpt-5-mini"

@@ -2,23 +2,28 @@
 import os, pickle
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
-from langchain.retrievers import EnsembleRetriever, BM25Retriever
+from langchain_community.retrievers import BM25Retriever
+from langchain.retrievers.ensemble import EnsembleRetriever
 from rag.config import Config
 
 class SurveyRetriever:
     """FAISS + BM25 앙상블 검색기"""
 
-    def __init__(self, sparse_weight=0.3, dense_weight=0.7, k=3):
+    def __init__(self, sparse_weight=0.3, dense_weight=0.7, k=1):
         self.embeddings = OpenAIEmbeddings(model=Config.EMBEDDING_MODEL)
 
         # === FAISS ===
-        self.faiss_store = FAISS.load_local(
-            folder_path=Config.FAISS_DB,
-            embeddings=self.embeddings,
-            allow_dangerous_deserialization=True,
-        )
-        faiss_retriever = self.faiss_store.as_retriever(search_kwargs={"k": k})
-
+        try:
+            self.faiss_store = FAISS.load_local(
+                folder_path=Config.FAISS_DB,
+                embeddings=self.embeddings,
+                allow_dangerous_deserialization=True,
+            )
+            faiss_retriever = self.faiss_store.as_retriever(search_kwargs={"k": k})
+            
+        except Exception as e:
+            raise RuntimeError(f"FAISS 로드 실패: {e}")
+        
         # === BM25 ===
         bm25_path = os.path.join(Config.BM_DB, "bm25.pkl")
         with open(bm25_path, "rb") as f:

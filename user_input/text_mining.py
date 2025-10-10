@@ -64,18 +64,3 @@ class TextMiningProcessor:
         return [word for word, _ in sorted_keywords[:top_k]]
 
 
-if __name__ == "__main__":
-    # 인스턴스 생성
-    processor = TextMiningProcessor()
-
-    # 테스트 문장
-    text = "대학생을 대상으로 온라인 강의 만족도를 조사하고자 합니다. 강의 질과 교수자의 피드백에 대해 평가합니다."
-
-    # 키워드 추출
-    keywords = processor.extract_keywords(text, './user_input/stopword.txt')
-
-    print("입력 문장:", text)
-    print("추출된 키워드:", keywords)
-
-
-

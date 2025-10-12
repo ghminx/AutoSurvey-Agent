@@ -9,7 +9,7 @@ import time
 st.set_page_config(
     page_title="AutoSurvey - AI 설문지 생성",
     page_icon="📋",
-    layout="wide",
+    # layout="wide",
     initial_sidebar_state="expanded"
 )
 
@@ -24,7 +24,9 @@ if 'user_input' not in st.session_state:
     st.session_state.user_input = None
 if 'step' not in st.session_state:
     st.session_state.step = 1  # 1: 입력, 2: 설문지, 3: 피드백
-
+if 'survey_version' not in st.session_state:
+    st.session_state.survey_version = 0
+    
 
 # 헤더
 st.title("📋 AutoSurvey")
@@ -95,25 +97,13 @@ st.markdown("---")
 st.header("1️⃣ 설문 요구사항 입력")
 
 # 샘플 텍스트 버튼
-col1, col2 = st.columns([3, 1])
-with col1:
-    user_text = st.text_area(
-        "설문 요구사항을 자연어로 입력하세요",
-        placeholder="예: 병원의 조직문화 개선을 위한 설문을 하려고합니다. 대상은 병원에 근무하는 의료진 및 직원들입니다. 10문항으로 설문지를 구성해주세요.",
-        height=150,
-        key="user_text_input"
-    )
-with col2:
-    st.markdown("##### 샘플 예시")
-    if st.button("병원 조직문화", use_container_width=True):
-        st.session_state.user_text_input = "병원의 조직문화 개선을 위한 설문을 하려고합니다 대상은 병원에 근무하는 의료진 및 직원들 입니다. 10문항으로 설문지를 구성해주세요"
-        st.rerun()
-    if st.button("학생 만족도", use_container_width=True):
-        st.session_state.user_text_input = "대학생을 대상으로 온라인 수업 만족도를 조사하려고 합니다. 수업 품질, 상호작용, 기술적 문제 등을 포함한 15문항의 설문지를 만들어주세요"
-        st.rerun()
-    if st.button("제품 피드백", use_container_width=True):
-        st.session_state.user_text_input = "신제품 출시 후 고객 피드백을 수집하고자 합니다. 제품 품질, 디자인, 가격 만족도를 측정하는 12문항의 설문을 작성해주세요"
-        st.rerun()
+user_text = st.text_area(
+    "설문 요구사항을 입력하세요",
+    placeholder="예: 병원의 조직문화 개선을 위한 설문을 하려고합니다. 대상은 병원에 근무하는 의료진 및 직원들입니다. 10문항으로 설문지를 구성해주세요.",
+    height=150,
+    key="user_text_input"
+)
+
 
 # 생성 버튼
 if st.button("🚀 설문지 생성하기", type="primary", use_container_width=True):
@@ -131,7 +121,7 @@ if st.button("🚀 설문지 생성하기", type="primary", use_container_width=
             with st.expander("🔍 분석된 요구사항 확인"):
                 st.json(st.session_state.user_input)
         
-        with st.spinner("✨ 설문지 생성 중... (30초~1분 소요)"):
+        with st.spinner("✨ 설문지 생성 중..."):
             # 2. 설문지 생성
             t_start = time.time()
             orchestrator = SurveyOrchestration(st.session_state.user_input)
@@ -141,6 +131,7 @@ if st.button("🚀 설문지 생성하기", type="primary", use_container_width=
             # 상태 저장
             st.session_state.orchestrator = orchestrator
             st.session_state.current_survey = survey
+            st.session_state.survey_version += 1
             st.session_state.step = 2
             
             # 히스토리 추가
@@ -156,6 +147,7 @@ if st.button("🚀 설문지 생성하기", type="primary", use_container_width=
 # ============================================
 # 단계 2: 생성된 설문지
 # ============================================
+    
 if st.session_state.current_survey:
     st.markdown("---")
     st.header("2️⃣ 생성된 설문지")
@@ -166,7 +158,7 @@ if st.session_state.current_survey:
         "생성된 설문지",
         st.session_state.current_survey,
         height=400,
-        key="survey_preview",
+        key=f"survey_preview_{st.session_state.survey_version}",
         disabled=True
     )
     
@@ -187,7 +179,6 @@ if st.session_state.current_survey:
     with col1:
         if st.button("✅ 최종 승인", type="primary", use_container_width=True):
             st.session_state.step = 3
-            st.balloons()
             st.success("🎉 설문지가 최종 승인되었습니다!")
             
     with col2:
@@ -214,6 +205,7 @@ if st.session_state.get('show_feedback', False) or st.session_state.step >= 3:
         
         col1, col2 = st.columns([1, 4])
         with col1:
+            # 단계 3: 피드백 및 재생성 섹션에서
             if st.button("🔄 재생성", type="primary", use_container_width=True):
                 if not feedback_text.strip():
                     st.error("피드백을 입력해주세요!")
@@ -228,6 +220,7 @@ if st.session_state.get('show_feedback', False) or st.session_state.step >= 3:
                             
                             # 상태 업데이트
                             st.session_state.current_survey = modified_survey
+                            st.session_state.survey_version += 1  # 🔥 버전 증가
                             
                             # 히스토리 추가
                             version = len(st.session_state.survey_history) + 1
@@ -236,8 +229,10 @@ if st.session_state.get('show_feedback', False) or st.session_state.step >= 3:
                                 (version, modified_survey, timestamp)
                             )
                             
+                            # 피드백 모드 해제
+                            st.session_state.show_feedback = False
+                            
                             st.success("✅ 설문지가 수정되었습니다!")
-                            st.session_state.feedback_input = ""  # 입력창 초기화
                             st.rerun()
                             
                         except Exception as e:
@@ -254,7 +249,7 @@ if st.session_state.get('show_feedback', False) or st.session_state.step >= 3:
             st.warning(f"⚠️ 최대 수정 횟수에 도달했습니다. (버전 {current_version}/5)")
     
     else:
-        st.success("🎉 설문지 작성이 완료되었습니다!")
+        st.success("설문지 작성이 완료되었습니다!")
         st.info("사이드바에서 이전 버전을 확인하거나, 새로운 설문지를 생성할 수 있습니다.")
 
 

@@ -24,15 +24,22 @@ class SurveyEmbedder:
         self.bm_path = Path(bm_path)
 
     # === FAISS 벡터DB 구축 및 저장 ===
-    def build_vector_db(self, docs: List[Document]):
+    def build_vector_db(self, docs: List[Document], batch_size: int = 50):
         if not docs:
             raise ValueError("문서 리스트(docs)가 비어 있습니다.")
 
         print(f"\n 총 {len(docs)}개 문서 임베딩 시작...")
 
-        with tqdm(total=len(docs), desc="Embedding Progress") as pbar:
-            vector_store = FAISS.from_documents(documents=docs, embedding=self.embed_model)
-            pbar.update(len(docs))
+        vector_store = None
+        
+        for i in tqdm(range(0, len(docs), batch_size), desc="Embedding Progress"):
+            batch = docs[i:i + batch_size]
+            batch_store = FAISS.from_documents(documents=batch, embedding=self.embed_model)
+            
+            if vector_store is None:
+                vector_store = batch_store  # 첫 배치
+            else:
+                vector_store.merge_from(batch_store)  # 나머지 배치
 
         vector_store.save_local(str(self.db_path))
         print(f"FAISS 벡터DB 저장 완료: {self.db_path}")

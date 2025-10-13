@@ -4,9 +4,6 @@ from rag.config import Config
 from rag.loader import SurveyLoader
 from rag.embedder import SurveyEmbedder
 
-from pathlib import Path
-import time
-
 
 
 # === 설정 ===

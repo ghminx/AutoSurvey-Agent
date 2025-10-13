@@ -34,6 +34,7 @@ print("모든 파일 복사 완료!")
 # HWP TO PDF 
 # -----------------------
 
+
 def hwp2pdf(folder_path, sav_path):
     
     # 한글 기본 설정 
@@ -69,7 +70,11 @@ def hwp2pdf(folder_path, sav_path):
 
     hwp.Quit() 
 
-pdf_folder = root_folder / "PDF"
+root_folder = Path('./data/설문지')
+
+sav_folder = root_folder / "HWP" / "의료·보건·복지"
+
+pdf_folder = root_folder / "PDF2" / "의료·보건·복지"
 
 hwp2pdf(sav_folder, pdf_folder)
 

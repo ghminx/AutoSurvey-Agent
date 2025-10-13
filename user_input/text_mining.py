@@ -61,6 +61,7 @@ class TextMiningProcessor:
         )
 
         # 상위 top_k 키워드 반환
-        return [word for word, _ in sorted_keywords[:top_k]]
+        return [word for word, _ in sorted_keywords[:
+                                                    ]]
 
 

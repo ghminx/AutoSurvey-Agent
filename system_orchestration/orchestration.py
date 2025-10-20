@@ -84,12 +84,12 @@ class SurveyOrchestration:
             수정된 설문지
         """
 
-        # 초기 생성을 먼저 실행했는지 확인
-        if self.model_name is None:
-            raise ValueError(
-                "초기 설문 생성을 먼저 실행해야 합니다. "
-                "__call__() 메서드를 먼저 호출하세요."
-            )
+        # # 초기 생성을 먼저 실행했는지 확인
+        # if self.model_name is None:
+        #     raise ValueError(
+        #         "초기 설문 생성을 먼저 실행해야 합니다. "
+        #         "__call__() 메서드를 먼저 호출하세요."
+        #     )
             
         # 1. 피드백 구조화
         print(" 피드백 분석 중...")

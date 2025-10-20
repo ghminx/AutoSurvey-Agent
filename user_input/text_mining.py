@@ -41,7 +41,7 @@ class TextMiningProcessor:
         nouns = [
             word for word, pos in words
             if pos == "Noun" and len(word) > 1 and word not in stopwords
-        ]
+]
 
         if not nouns:
             return []
